@@ -253,6 +253,13 @@ Surface Window::GetSurface() const
 	return Surface(surface);
 }
 
+Window& Window::UpdateSurface()
+{
+	if (SDL_UpdateWindowSurface(window_))
+		throw SDL2pp::Exception("SDL_UpdateWindowSurface");
+	return *this;
+}
+
 #if SDL_VERSION_ATLEAST(2, 0, 5)
 Window& Window::SetOpacity(float opacity) {
 	if (SDL_SetWindowOpacity(window_, opacity))
