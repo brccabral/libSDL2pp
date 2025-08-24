@@ -35,11 +35,29 @@ using namespace SDL2pp;
 int main(int, char*[]) try {
 	SDL sdl(SDL_INIT_AUDIO);
 
+	int num_audio_dev = SDL_GetNumAudioDevices(0);
+	printf("Number of audio devices: %d\n\n", num_audio_dev);
+	for (int i = 0; i < num_audio_dev; i++)
+	{
+		printf("Device %d: %s\n", i, SDL_GetAudioDeviceName(i, 0));
+	}
+	printf("\nSelect audio device number:");
+	int selected_dev;
+	std::scanf("%d", &selected_dev);
+
+	if (selected_dev<0 || selected_dev >= num_audio_dev)
+	{
+		printf("No such device\n");
+		return 1;
+	}
+
+	const char *dev_name = SDL_GetAudioDeviceName(selected_dev, 0);
+
 	Wav wav(TESTDATA_DIR "/test.wav");
 	Uint8* wav_pos = wav.GetBuffer();
 
 	// Open audio device
-	AudioDevice dev(NullOpt, 0, wav.GetSpec(), [&wav, &wav_pos](Uint8* stream, int len) {
+	AudioDevice dev(dev_name, 0, wav.GetSpec(), [&wav, &wav_pos](Uint8* stream, int len) {
 				// Fill provided buffer with wave contents
 				Uint8* stream_pos = stream;
 				Uint8* stream_end = stream + len;

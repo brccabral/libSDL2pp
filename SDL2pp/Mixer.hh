@@ -24,11 +24,13 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 
 #include <SDL_stdinc.h>
 #include <SDL_mixer.h>
 
 #include <SDL2pp/Export.hh>
+#include <SDL2pp/Optional.hh>
 
 namespace SDL2pp {
 
@@ -75,13 +77,16 @@ public:
 	///                     to 2 for stereo, 1 for mono. This has
 	///                     nothing to do with mixing channels
 	/// \param[in] chunksize Bytes used per output sample
+	/// \param[in] device The device name to open, or NULL to choose a reasonable default
+	/// \param[in] allowed_changes Allow change flags (see SDL_AUDIO_ALLOW_* flags)
 	///
 	/// \throws SDL2pp::Exception
 	///
-	/// \see https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer.html#SEC11
+	/// \see https://wiki.libsdl.org/SDL2_mixer/Mix_OpenAudioDevice
+	/// \see https://wiki.libsdl.org/SDL2_mixer/Mix_OpenAudio
 	///
 	////////////////////////////////////////////////////////////
-	Mixer(int frequency, Uint16 format, int channels, int chunksize);
+	Mixer(int frequency, Uint16 format, int channels, int chunksize, const Optional<std::string>& device=NullOpt, int allowed_changes=SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_CHANNELS_CHANGE);
 
 	////////////////////////////////////////////////////////////
 	/// \brief Destructor

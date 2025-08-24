@@ -33,6 +33,24 @@ using namespace SDL2pp;
 int main(int, char*[]) try {
 	SDL sdl(SDL_INIT_AUDIO);
 
+	int num_audio_dev = SDL_GetNumAudioDevices(0);
+	printf("Number of audio devices: %d\n\n", num_audio_dev);
+	for (int i = 0; i < num_audio_dev; i++)
+	{
+		printf("Device %d: %s\n", i, SDL_GetAudioDeviceName(i, 0));
+	}
+	printf("\nSelect audio device number:");
+	int selected_dev;
+	std::scanf("%d", &selected_dev);
+
+	if (selected_dev<0 || selected_dev >= num_audio_dev)
+	{
+		printf("No such device\n");
+		return 1;
+	}
+
+	const char *dev_name = SDL_GetAudioDeviceName(selected_dev, 0);
+
 	// XXX: these should be constexpr and not captured in lambda
 	// below, but that fails on microsoft crapiler
 	int samplerate = 48000;
@@ -43,7 +61,7 @@ int main(int, char*[]) try {
 	AudioSpec spec(samplerate, AUDIO_S16SYS, 1, 4096);
 
 	// Open audio device
-	AudioDevice dev(NullOpt, 0, spec, [&nsample, samplerate, frequency](Uint8* stream, int len) {
+	AudioDevice dev(dev_name, 0, spec, [&nsample, samplerate, frequency](Uint8* stream, int len) {
 				// fill provided buffer with sine wave
 				for (Uint8* ptr = stream; ptr < stream + len; ptr += 2)
 					*(Uint16*)ptr = (Uint16)(32766.0f * sin(nsample++ / (float)samplerate * frequency));

@@ -31,7 +31,26 @@ using namespace SDL2pp;
 
 int main(int, char*[]) try {
 	SDL sdl(SDL_INIT_AUDIO);
-	Mixer mixer(MIX_DEFAULT_FREQUENCY, AUDIO_S16SYS, 1, 4096);
+
+	int num_audio_dev = SDL_GetNumAudioDevices(0);
+	printf("Number of audio devices: %d\n\n", num_audio_dev);
+	for (int i = 0; i < num_audio_dev; i++)
+	{
+		printf("Device %d: %s\n", i, SDL_GetAudioDeviceName(i, 0));
+	}
+	printf("\nSelect audio device number:");
+	int selected_dev;
+	std::scanf("%d", &selected_dev);
+
+	if (selected_dev<0 || selected_dev >= num_audio_dev)
+	{
+		printf("No such device\n");
+		return 1;
+	}
+
+	const char *dev_name = SDL_GetAudioDeviceName(selected_dev, 0);
+
+	Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096, dev_name);
 
 	// XXX: this should be constexpr and not captured in lambda
 	// below, but that fails on microsoft crapiler
