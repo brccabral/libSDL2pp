@@ -245,6 +245,14 @@ Window& Window::SetBordered(bool bordered) {
 	return *this;
 }
 
+Surface Window::GetSurface() const
+{
+	SDL_Surface* surface = SDL_GetWindowSurface(window_);
+	if (surface == nullptr)
+		throw SDL2pp::Exception("SDL_GetWindowSurface");
+	return Surface(surface);
+}
+
 #if SDL_VERSION_ATLEAST(2, 0, 5)
 Window& Window::SetOpacity(float opacity) {
 	if (SDL_SetWindowOpacity(window_, opacity))
