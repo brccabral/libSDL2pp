@@ -540,6 +540,19 @@ public:
 	////////////////////////////////////////////////////////////
 	Window& SetBordered(bool bordered = true);
 
+	////////////////////////////////////////////////////////////
+	/// \brief Get the Surface associated with the window.
+	///
+	/// \return SDL2pp::Surface as the surface associated with
+	///			the window
+	///
+	/// \throws SDL2pp::Exception
+	///
+	///	\see https://wiki.libsdl.org/SDL2/SDL_GetWindowSurface
+	///
+	////////////////////////////////////////////////////////////
+	Surface GetSurface() const;
+
 #if SDL_VERSION_ATLEAST(2, 0, 5)
 	////////////////////////////////////////////////////////////
 	/// \brief Set the opacity for a window
