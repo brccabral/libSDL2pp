@@ -314,14 +314,22 @@ public:
 	///
 	/// \param[in] srcrect Rectangle to be copied, or NullOpt to copy the entire surface
 	/// \param[in] dst Blit target surface
-	/// \param[in] dstrect Rectangle that is copied into
+	/// \param[in] dstrect Rectangle that is copied into. It must be lvalue non-const, but it
+	///                    can be set to NullOpt. After all clipping is performed, final
+	///                    blit rectangle is saved in dstrect if not NullOpt. (SDL3 it is const).\n
+	/// Example:\n
+	/// ```\n
+	/// Optional<Rect> dstrect = NullOpt;\n
+	/// surface.Blit(NullOpt, dst, dstrect);\n
+	/// ```
 	///
 	/// \throws SDL2pp::Exception
 	///
 	/// \see http://wiki.libsdl.org/SDL_BlitSurface
+	/// \see https://wiki.libsdl.org/SDL2/SDL_BlitSurface
 	///
 	////////////////////////////////////////////////////////////
-	void Blit(const Optional<Rect>& srcrect, Surface& dst, const Rect& dstrect);
+	void Blit(const Optional<Rect>& srcrect, Surface& dst, Optional<Rect>& dstrect);
 
 	////////////////////////////////////////////////////////////
 	/// \brief Scaled surface copy to a destination surface

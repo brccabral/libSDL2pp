@@ -100,9 +100,8 @@ Surface Surface::Convert(Uint32 pixel_format) {
 	return SDL2pp::Surface(surface);
 }
 
-void Surface::Blit(const Optional<Rect>& srcrect, Surface& dst, const Rect& dstrect) {
-	SDL_Rect tmpdstrect = dstrect; // 4th argument is non-const; does it modify rect?
-	if (SDL_BlitSurface(surface_, srcrect ? &*srcrect : nullptr, dst.Get(), &tmpdstrect) != 0)
+void Surface::Blit(const Optional<Rect>& srcrect, Surface& dst, Optional<Rect>& dstrect) {
+	if (SDL_BlitSurface(surface_, srcrect ? &*srcrect : nullptr, dst.Get(), dstrect ? &*dstrect : nullptr) != 0)
 		throw Exception("SDL_BlitSurface");
 }
 
