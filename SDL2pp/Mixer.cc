@@ -26,9 +26,9 @@
 
 namespace SDL2pp {
 
-Mixer::Mixer(int frequency, Uint16 format, int channels, int chunksize) : open_(true) {
-	if (Mix_OpenAudio(frequency, format, channels, chunksize) != 0)
-		throw Exception("Mix_OpenAudio");
+Mixer::Mixer(int frequency, Uint16 format, int channels, int chunksize, const Optional<std::string>& device, int allowed_changes) : open_(true) {
+	if (Mix_OpenAudioDevice(frequency, format, channels, chunksize, device ? device->c_str() : nullptr, allowed_changes) != 0)
+		throw Exception("Mix_OpenAudioDevice");
 }
 
 Mixer::~Mixer() {
