@@ -123,6 +123,12 @@ void Mixer::RemoveChannelFinishedHandler() {
 	Mix_ChannelFinished(nullptr);
 }
 
+void Mixer::CloseAudio()
+{
+	Mix_CloseAudio();
+	open_ = false;
+}
+
 int Mixer::IsChannelPlaying(int channel) const {
 	return Mix_Playing(channel);
 }
